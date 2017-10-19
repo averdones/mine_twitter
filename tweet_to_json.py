@@ -21,9 +21,6 @@ def tweet_to_json(tweet_id, write_json=True):
     auth.set_access_token(access_key, access_secret)
     api = tweepy.API(auth)
     
-    # Save tweet
-    tweet = api.get_status(tweet_id)
-
     # Save actual path
     path = os.path.dirname(os.path.abspath(__file__))
 
@@ -32,6 +29,9 @@ def tweet_to_json(tweet_id, write_json=True):
     if not os.path.exists(path_json):
         os.makedirs(path_json)
     
+    # Save tweet
+    tweet = api.get_status(tweet_id)
+
     # Write json
     if write_json:
         with open(os.path.join(path_json, ("tweet_" + tweet_id + ".json")), "w") as f:
