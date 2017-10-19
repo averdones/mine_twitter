@@ -14,8 +14,12 @@ def tweet_to_json(tweet_id, remove_url=True, write_json=True):
 
     Inputs:
         - tweet_id: tweet identification number.
-        - write_json: boolean. If True, writes the json file.
         - remove_url: boolean. If True, remove url from the text of the tweet.
+        When calling the program from the command line, set this argument (the second one)
+        to 0 in order no to remove the URL. Don't write anything as second argument 
+        in order to remove the URL.
+        - write_json: boolean. If True, writes the json file.
+
     """    
     # Authorize twitter, initialize tweepy
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
@@ -42,7 +46,6 @@ def tweet_to_json(tweet_id, remove_url=True, write_json=True):
     ### ----------------------------------------
     # Remove the url from the text
     if remove_url:
-        print("HOLA")
         # Save url of the tweet
         j_url = j["entities"]["media"][0]["url"]
         
@@ -64,7 +67,12 @@ if __name__ == "__main__":
     parser.add_argument("remove_url", nargs="?", help="True to remove URL from text")
     parser.parse_args()
     args = parser.parse_args()
-    try:
-        tweet_to_json(args.tweet_id, int(args.remove_url))
-    except:
-        print("Oops! There is no tweet with this ID number.")
+
+    if args.remove_url is None:
+        args.remove_url = 1
+
+    tweet_to_json(args.tweet_id, int(args.remove_url))
+    # try:
+    #     tweet_to_json(args.tweet_id, int(args.remove_url))
+    # except:
+    #     print("Oops! There is no tweet with this ID number.")
