@@ -21,7 +21,6 @@ def tweet_to_json(tweet_id, write_json=True):
     auth.set_access_token(access_key, access_secret)
     api = tweepy.API(auth)
     
-
     # Save tweet
     tweet = api.get_status(tweet_id)
 
