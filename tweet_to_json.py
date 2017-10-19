@@ -4,10 +4,10 @@ import json
 import argparse
 
 # Twitter API credentials
-consumer_key =  "RXcyOZ1nnpEFuaCdOc6KhSsuK"
-consumer_secret = "y9VzsaPmyLP34BcpJCzzV1FqYiemxwpEablbcr94obWfhN9v9d"
-access_key = "277726408-imwLuQjIdAOHw2O75IOqwdFIjXfbcYjsyxZiTd29"
-access_secret = "buqlZn4k4HkMJKAUj83DlcBadE15KE6OnfQr1v9C5rRvg"
+consumer_key = "Consumer key goes here"
+consumer_secret = "Consumer secret goes here"
+access_key = "access key goes here"
+access_secret = "access secret goes here"
 
 def tweet_to_json(tweet_id, write_json=True):
     """ Get json of a tweet.
