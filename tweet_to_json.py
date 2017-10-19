@@ -71,8 +71,7 @@ if __name__ == "__main__":
     if args.remove_url is None:
         args.remove_url = 1
 
-    tweet_to_json(args.tweet_id, int(args.remove_url))
-    # try:
-    #     tweet_to_json(args.tweet_id, int(args.remove_url))
-    # except:
-    #     print("Oops! There is no tweet with this ID number.")
+    try:
+        tweet_to_json(args.tweet_id, int(args.remove_url))
+    except:
+        print("Oops! There is no tweet with this ID number.")
