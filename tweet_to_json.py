@@ -47,14 +47,17 @@ def tweet_to_json(tweet_id, remove_url=True, write_json=True):
     ### ----------------------------------------
     # Remove the url from the text
     if remove_url:
-        # Save url of the tweet
-        j_url = j["entities"]["media"][0]["url"]
-        
-        # Save text from the tweet
-        j_text = j["text"]
-        
-        # Remove url from text
-        j["text"] = j_text.replace(j_url, "")
+        try:
+            # Save url of the tweet
+            j_url = j["entities"]["media"][0]["url"]
+            
+            # Save text from the tweet
+            j_text = j["text"]
+            
+            # Remove url from text
+            j["text"] = j_text.replace(j_url, "")
+        except:
+            pass
     ### ----------------------------------------
         
     # Write json
@@ -69,12 +72,12 @@ def tweet_to_json(tweet_id, remove_url=True, write_json=True):
     if not os.path.exists(path_img):
         os.makedirs(path_img)
     # Save user name
-    if j["user"]["screen_name"] != "":
-        user_name = j["user"]["screen_name"]
-    else:
-        user_name = "user"
-
     try:
+        if j["user"]["screen_name"] != "":
+            user_name = j["user"]["screen_name"]
+        else:
+            user_name = "user"
+        
         profile_img = j["user"]["profile_image_url_https"]
         # Remove 'normal', so image is in full size
         profile_img = profile_img.replace("_normal", "")
