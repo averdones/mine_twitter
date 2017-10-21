@@ -2,6 +2,7 @@ import os
 import tweepy 
 import json
 import argparse
+import urllib.request
 
 # Twitter API credentials
 consumer_key = "Consumer key goes here"
@@ -60,6 +61,26 @@ def tweet_to_json(tweet_id, remove_url=True, write_json=True):
     if write_json:
         with open(os.path.join(path_json, ("tweet_" + tweet_id + ".json")), "w") as f:
             json.dump(j, f, sort_keys=True, indent=4)
+
+    ### ----------------------------------------
+    # Download profile picture of the user that posted the tweet
+    # Create directory to save the images if it doesn't exist
+    path_img = os.path.join(path, "images")
+    if not os.path.exists(path_img):
+        os.makedirs(path_img)
+    # Save user name
+    if j["user"]["screen_name"] != "":
+        user_name = j["user"]["screen_name"]
+    else:
+        user_name = "user"
+
+    try:
+        profile_img = j["user"]["profile_image_url_https"]
+        # Remove 'normal', so image is in full size
+        profile_img = profile_img.replace("_normal", "")
+        urllib.request.urlretrieve(profile_img, (os.path.join(path_img, (user_name + "_profile_image.jpg"))))
+    except:
+        pass
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
