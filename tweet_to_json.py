@@ -89,7 +89,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("tweet_id", help="Tweet id number")
     parser.add_argument("remove_url", nargs="?", help="True to remove URL from text")
-    parser.parse_args()
     args = parser.parse_args()
 
     if args.remove_url is None:
