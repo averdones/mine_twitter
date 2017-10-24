@@ -106,4 +106,4 @@ if __name__ == "__main__":
     try:
         tweet_to_json(args.tweet_id, int(args.size_img), int(args.remove_url))
     except:
-        print("Oops! Some error occured. Perhaps, there is no tweet with this ID number.")
+        print("Oops! Some error occurred. Perhaps, there is no tweet with this ID number.")
