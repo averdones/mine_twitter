@@ -3,6 +3,7 @@ import tweepy
 import json
 import argparse
 import urllib.request
+from PIL import Image
 
 # Twitter API credentials
 consumer_key = "Consumer key goes here"
@@ -10,11 +11,12 @@ consumer_secret = "Consumer secret goes here"
 access_key = "access key goes here"
 access_secret = "access secret goes here"
 
-def tweet_to_json(tweet_id, remove_url=True, write_json=True):
+def tweet_to_json(tweet_id, size_img=400, remove_url=True, write_json=True):
     """ Get json of a tweet.
 
     Inputs:
         - tweet_id: tweet identification number.
+        - size_img: size to which the profile picture will be resized.
         - remove_url: boolean. If True, remove url from the text of the tweet.
         When calling the program from the command line, set this argument (the second one)
         to 0 in order no to remove the URL. Don't write anything as second argument 
@@ -36,7 +38,7 @@ def tweet_to_json(tweet_id, remove_url=True, write_json=True):
         os.makedirs(path_json)
     
     # Save tweet
-    tweet = api.get_status(tweet_id)
+    tweet = api.get_status(tweet_id, tweet_mode='extended')
 
     # Save jason as a string
     json_str = json.dumps(tweet._json)
@@ -52,10 +54,10 @@ def tweet_to_json(tweet_id, remove_url=True, write_json=True):
             j_url = j["entities"]["media"][0]["url"]
             
             # Save text from the tweet
-            j_text = j["text"]
+            j_text = j["full_text"]
             
             # Remove url from text
-            j["text"] = j_text.replace(j_url, "")
+            j["full_text"] = j_text.replace(j_url, "")
         except:
             pass
     ### ----------------------------------------
@@ -81,20 +83,27 @@ def tweet_to_json(tweet_id, remove_url=True, write_json=True):
         profile_img = j["user"]["profile_image_url_https"]
         # Remove 'normal', so image is in full size
         profile_img = profile_img.replace("_normal", "")
-        urllib.request.urlretrieve(profile_img, (os.path.join(path_img, (user_name + "_profile_image.jpg"))))
+        # Save image from URL
+        saved_url = os.path.join(path_img, (user_name + "_profile_image.jpg"))
+        urllib.request.urlretrieve(profile_img, saved_url)
+        # Resize image to have the same size every time
+        size = (size_img, size_img)
+        img = Image.open(saved_url)
+        img_resized = img.resize(size, Image.ANTIALIAS)
+        img_resized.save(saved_url)
     except:
         pass
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("tweet_id", help="Tweet id number")
-    parser.add_argument("remove_url", nargs="?", help="True to remove URL from text")
+    parser.add_argument("size_img", nargs="?", default=400,
+        help="Size of the resized profile picture")
+    parser.add_argument("remove_url", nargs="?", default=True,
+        help="True to remove URL from text")
     args = parser.parse_args()
 
-    if args.remove_url is None:
-        args.remove_url = 1
-
     try:
-        tweet_to_json(args.tweet_id, int(args.remove_url))
+        tweet_to_json(args.tweet_id, int(args.size_img), int(args.remove_url))
     except:
-        print("Oops! There is no tweet with this ID number.")
+        print("Oops! Some error occured. Perhaps, there is no tweet with this ID number.")
