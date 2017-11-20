@@ -10,7 +10,7 @@ First of all, you need to obtain your Twitter API credentials from [https://apps
 
 Once you have it, simply substitute your own credentials on the four lines following the comment _Twitter API credentials_.
 
-Then, you just call the program as ```python tweet_to_json.py TWEET_ID```, where _TWEET_ID_ should be the numeric ID of the wanted tweet. For example, to get the JSON file from [this tweet](https://twitter.com/goodfellow_ian/status/932728419640492032):
+Then, you just call the program as ```python tweet_to_json.py TWEET_ID```, where _TWEET_ID_ should be the numeric ID of the wanted tweet. For example, to get the JSON file from [this tweet](https://twitter.com/goodfellow_ian/status/932728419640492032), run:
 
 	python tweet_to_json.py 932728419640492032
 
